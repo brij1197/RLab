@@ -11,11 +11,16 @@ class Ethernet(Driver):
     def connect(self):
         self.sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.sock.connect((self.ip,self.port))
+        if self.sock:
+            return True
+        return False
     
     def disconnect(self):
         if self.sock:
             self.sock.close()
             self.sock=None
+            return True
+        return False
             
     def send(self,command:str):
         self.sock.sendall(command.encode())

@@ -1,27 +1,43 @@
-from device import Device
-from ethernet import Ethernet
-from serialcom import SerialDriver
+from deviceselection import DeviceSelection
+
+device=DeviceSelection()
+
+def ethernetconfig() -> None:
+    print("Enter the following: ")
+    print("IP:")
+    ip=str(input())
+    print("Port:")
+    port=int(input())
+    ethernetconfig(ip,port)
+    device.ethernetdriver(ip,port)
+    print("Do you want to run a Quick Test (Y/N): ")
+    option=input()
+    if(option.lower()=='y'):
+        device.quicktest()
+    print("Do you want to run a Full Test (Y/N): ")
+    option=input()
+    if(option.lower()=='y'):
+        device.fulltest()
+
 
 def main():
-    #Example for Ethernet
-    ethernet_driver=Ethernet("192.168.1.100",8080)
-    ethernet_device=Device(ethernet_driver)
+    quit=False
+    print("---------Device Type---------")
+    print("1. Ethernet")
+    print("2. Serial")
+    print("3. Exit")
     
-    quick_test=ethernet_device.quick_test()
-    print(f"Ethernet Quick Test Result : {'Pass' if quick_test else 'Fail'}")
+    print(" Enter Choice: ")
     
-    full_test=ethernet_device.full_test()
-    print(f"Ethernet Full Test Result : {'Pass' if full_test else 'Fail'}")
-    
-    #Example for Serial Com.
-    serial_driver=SerialDriver("COM3",8080,"RS-485") # For GNU/Linux -> /dev/ttyUSB0
-    serial_device=Device(serial_driver)
-    
-    quick_test=serial_device.quick_test()
-    print(f"Serial Device Quick Test Result : {'Pass' if quick_test else 'Fail'}")
-    
-    full_test=serial_device.full_test()
-    print(f"Serial Device Full Test Result : {'Pass' if full_test else 'Fail'}")
-
+    while not quit:
+        choice=int(input())
+        match choice:
+            case 1:
+                ethernetconfig()
+            case 2:
+                pass
+            case 3:
+                quit()
+            
 if __name__=="__main__":
     main()
