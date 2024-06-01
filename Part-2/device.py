@@ -1,31 +1,37 @@
 from driver import Driver
 
 class Device:
-    def __init__(self,driver:Driver):
-        self.driver=driver
+    def __init__(self, driver: Driver):
+        self.driver = driver
     
     def initialize(self):
-        self.driver.connect()
+        if not self.driver.connect():
+            raise ConnectionError("Failed to connect the device.")
     
     def shutdown(self):
-        self.driver.disconnect()
+        if not self.driver.disconnect():
+            raise ConnectionError("Failed to disconnect the device.")
     
-    def transmit(self,command:str):
-        self.driver.send(command)
+    def transmit(self, command: str):
+        if not self.driver.send(command):
+            raise IOError("Failed to send command.")
     
     def response(self) -> str:
-        return self.driver.receive()
+        response = self.driver.receive()
+        if response is None:
+            raise IOError("Failed to receive response.")
+        return response
     
     def quick_test(self) -> bool:
         self.initialize()
         self.transmit("QUICK")
-        response=self.response()
+        response = self.response()
         self.shutdown()
-        return response=="QUICK"
+        return response == "QUICK"
     
     def full_test(self) -> bool:
         self.initialize()
         self.transmit("FULL")
-        response=self.response()
+        response = self.response()
         self.shutdown()
-        return response=="FULL"
+        return response == "FULL"
