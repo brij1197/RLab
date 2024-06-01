@@ -1,4 +1,4 @@
-from abc import ABC,abstractmethod
+from abc import ABC, abstractmethod
 
 class Driver(ABC):
     @abstractmethod
@@ -10,9 +10,9 @@ class Driver(ABC):
         pass
     
     @abstractmethod
-    def send(self,command:str) -> bool:
+    def send(self, command: str) -> bool:
         pass
     
     @abstractmethod
-    def receive(self)->str:
+    def receive(self) -> str:
         pass
